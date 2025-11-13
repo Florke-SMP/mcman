@@ -1,0 +1,47 @@
+name: MCMAN
+
+on:
+  # Trigger every Friday at 2 AM UTC
+  schedule:
+    - cron: '0 2 * * 5'
+  
+  # Allow manual triggering
+  workflow_dispatch:
+
+jobs:
+  build:
+    permissions:
+      contents: read
+      packages: write
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+        
+    - name: Log in to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+  
+    - name: Build and push the Docker image
+      run: |
+        version="$(grep '^version' Cargo.toml | head -n1 | cut -d'"' -f2)"
+
+        # Build the Docker image
+        docker build \
+          -t ghcr.io/florke-smp/mcman:latest \
+          -t ghcr.io/florke-smp/mcman:${version} \
+          .
+
+        docker push ghcr.io/florke-smp/velocity:latest
+        docker push ghcr.io/florke-smp/velocity:${version}
+    
+    - name: Docker system prune
+      run: docker system prune -f
