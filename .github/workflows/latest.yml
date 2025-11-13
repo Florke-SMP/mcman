@@ -40,8 +40,8 @@ jobs:
           -t ghcr.io/florke-smp/mcman:${version} \
           .
 
-        docker push ghcr.io/florke-smp/velocity:latest
-        docker push ghcr.io/florke-smp/velocity:${version}
+        docker push ghcr.io/florke-smp/mcman:latest
+        docker push ghcr.io/florke-smp/mcman:${version}
     
     - name: Docker system prune
       run: docker system prune -f
