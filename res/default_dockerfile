@@ -1,4 +1,4 @@
-FROM ghcr.io/paradigmmc/mcman:latest as builder
+FROM ghcr.io/Florke-SMP/mcman:0.4.5-1 as builder
 WORKDIR /server
 COPY . .
 RUN mcman build
