@@ -263,7 +263,7 @@ impl App {
 
                 Ok(Downloadable::GithubRelease {
                     repo,
-                    tag: tag.to_string(),
+                    tag: tag.clone(),
                     asset,
                 })
             }
